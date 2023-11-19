@@ -41,3 +41,14 @@ This script enables you to download assets from a Nexus repository. It fetches a
 
 - Python 3.x
 - `requests` library (install using `pip install requests`)
+
+### 3 - Change docker image Registry
+
+[Script Source](./python/change-image-repo.py)
+
+The script will read the image names from image_list.txt, process each image, and migrate it to the destination registry.
+
+#### Prerequisites
+
+- Python 
+- Docker
