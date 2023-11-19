@@ -1,0 +1,2 @@
+quay.io/coreos/kube-state-metrics:latest
+quay.io/thanos/thanos:v0.31.0
