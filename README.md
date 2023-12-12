@@ -52,3 +52,15 @@ The script will read the image names from image_list.txt, process each image, an
 
 - Python 
 - Docker
+
+### 4 - webp contverter to jpg on minio storage
+
+[Script Source](./python/webp-converter.py)
+
+This script allows you to download webp images from a MinIO bucket, convert them from RGBA to RGB mode, and upload the converted images back to the bucket in JPEG format.
+
+#### Prerequisites
+
+- Python 3.x
+- minio library (install with pip install minio)
+- PIL (Python Imaging Library) library (install with pip install pillow)
