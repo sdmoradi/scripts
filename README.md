@@ -64,3 +64,24 @@ This script allows you to download webp images from a MinIO bucket, convert them
 - Python 3.x
 - minio library (install with pip install minio)
 - PIL (Python Imaging Library) library (install with pip install pillow)
+
+### 5 - Excel Webp Image Downloader and Converter
+
+[Script Source](./python/web-converter-excel.py)
+
+This Python script reads image URLs from an Excel file with images.xlsx file name and ImageURL column , downloads the images, converts them to JPEG format, and saves them in separate directories. The original image names are preserved during the process.
+
+#### Prerequisites
+
+- Python 3.x
+- pandas library (`pip install pandas`)
+- requests library (`pip install requests`)
+- Pillow library (`pip install pillow`)
+- openpyxl library (`pip install openpyxl`)
+
+#### Run the script
+
+```
+pip install -r requirement-webp-excel-converter.txt
+python web-converter-excel.py
+```
