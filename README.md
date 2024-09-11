@@ -85,3 +85,62 @@ This Python script reads image URLs from an Excel file with images.xlsx file nam
 pip install -r requirement-webp-excel-converter.txt
 python web-converter-excel.py
 ```
+
+### 6 - Latency Monitoring Script 
+
+[Script Source](./python/report-from-elastic.py)
+
+This script monitors the latency of specific request URIs on an Elasticsearch server and sends alerts to a Telegram webhook if latency exceeds a specified threshold.
+
+
+#### Prerequisites
+
+- Python 3.x
+- requests library (`pip install requests`)
+
+#### Configuration
+
+- schema: The protocol to use (e.g., https).
+
+- elastic_address: The address of your Elasticsearch server.
+
+- index_name: The name of the Elasticsearch index.
+
+- api: The Elasticsearch API endpoint (default is _count).
+
+- auth: The authorization token for Elasticsearch.
+
+- telegram_url: The URL of your Telegram webhook.
+
+- server_name_1 and server_name_2: The server names to monitor.
+
+#### Request URIs
+
+The script monitors the following request URIs:
+- request_uris_1s: URIs for 1-second latency checks.
+
+- request_uris_2s: URIs for 2-second latency checks.
+
+- request_uris_3s: URIs for 3-second latency checks.
+
+- request_uris_5s: URIs for 5-second latency checks.
+
+#### Functions
+
+- get_count(query)
+Sends a GET request to Elasticsearch with the specified query and returns the count of matching documents.
+
+- calculate_percentage(total, gte_2s)
+Calculates the percentage of documents with latency greater than or equal to the specified threshold.
+
+- send_to_telegram(alert_data)
+Sends an alert to the specified Telegram webhook.
+
+- run_query(latency_second, upper_than_percentage)
+Runs the latency query for the specified latency threshold and sends an alert if the percentage of high-latency requests exceeds the specified threshold.
+
+#### Run the script
+
+```
+python script_name.py
+```
