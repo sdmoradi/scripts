@@ -7,7 +7,8 @@ index_name = "nginxlogs-alias-production"
 api = "_count"
 auth = "ABCD"
 telegram_url = "https://telegram.com/webhook-address"
-server_name = "gateway.example.com"
+server_name_1 = "gateway1.example.com"
+server_name_2 = "gateway2.example.com"
 
 # URL and Headers for authentication and content type
 url = schema + "://" + elastic_address + "/" + index_name + "/" + api
@@ -57,7 +58,9 @@ def send_to_telegram(alert_data):
 
 def run_query(latency_second,upper_than_percentage):
     for request_uri in eval("request_uris_" + str(latency_second) + "s"):
-        
+        server_name = server_name_1
+        if request_uri in ['/example/uri-2', '/example/uri-3']:
+            server_name = server_name_2
         query_total = {
             "query": {
                 "bool": {
