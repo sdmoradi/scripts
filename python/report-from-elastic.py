@@ -55,6 +55,84 @@ def send_to_telegram(alert_data):
     headers = {"Content-Type": "application/json"}
     response = requests.post(url, headers=headers, json=alert_data)
     return response
+def uptime_query(server_name,alert_percentage):
+    uptime_query = {
+        "query": {
+            "bool": {
+            "must": [
+                { "match": { "server_name": server_name } },
+                { "prefix": { "request_uri.keyword": "/" } },
+                {
+                "bool": {
+                    "should": [
+                    { "prefix": { "status": "1" } },
+                    { "prefix": { "status": "2" } },
+                    { "prefix": { "status": "4" } }
+                    ]
+                }
+                },
+                {
+                "range": {
+                    "@timestamp": {
+                    "gte": "now-12h"
+                    }
+                }
+                }
+            ]
+            }
+        }
+        }
+    downtime_query = {
+        "query": {
+            "bool": {
+            "must": [
+                { "match": { "server_name": server_name } },
+                { "prefix": { "request_uri.keyword": "/" } },
+                {
+                "bool": {
+                    "should": [
+                    { "prefix": { "status": "5" } },
+                    ]
+                }
+                },
+                {
+                "range": {
+                    "@timestamp": {
+                    "gte": "now-12h"
+                    }
+                }
+                }
+            ]
+            }
+        }
+        }
+    uptime_count = get_count(uptime_query)
+    print(uptime_count)
+    downtime_count = get_count(downtime_query)
+    print(downtime_count)
+    downtime_percentage = downtime_count * 100 / uptime_count
+    print(str(downtime_percentage) + "%")
+    uptime_percentage = 100 - downtime_percentage
+    print(str(uptime_percentage) + "%")
+    if uptime_percentage <= alert_percentage:
+        alert_data = {
+            "status": "firing",
+            "alerts": [
+                {
+                    "labels": {
+                        "alertname": server_name + " Uptime",
+                        "severity": "Critical",
+                    },
+                    "annotations": {
+                        "summary": "Uptime Alert",
+                        "description": " 🔴 " + "Uptime of " + server_name + " is " + str(uptime_percentage) + "%"
+                    },
+                }
+            ],
+        }
+        print("Alert sended")
+        send_to_telegram(alert_data)
+
 
 def run_query(latency_second,upper_than_percentage):
     for request_uri in eval("request_uris_" + str(latency_second) + "s"):
@@ -121,3 +199,4 @@ response = run_query(1,5)
 response = run_query(2,5)
 response = run_query(3,5)
 response = run_query(5,5)
+response = uptime_query("example.com", 99 )
