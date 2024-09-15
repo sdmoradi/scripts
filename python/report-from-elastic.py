@@ -55,6 +55,7 @@ def send_to_telegram(alert_data):
     headers = {"Content-Type": "application/json"}
     response = requests.post(url, headers=headers, json=alert_data)
     return response
+
 def uptime_query(server_name,alert_percentage):
     uptime_query = {
         "query": {
@@ -134,7 +135,7 @@ def uptime_query(server_name,alert_percentage):
         send_to_telegram(alert_data)
 
 
-def run_query(latency_second,upper_than_percentage):
+def run_query(latency_second,alert_percentage):
     for request_uri in eval("request_uris_" + str(latency_second) + "s"):
         server_name = server_name_1
         if request_uri in ['/example/uri-2', '/example/uri-3']:
@@ -176,7 +177,7 @@ def run_query(latency_second,upper_than_percentage):
         percentage = calculate_percentage(total_count, gte_count)
         print("Percentage of " + request_uri + " = " + str(percentage) + "%")
         print("---------------------------------------------------------------------------------")
-        if percentage >= upper_than_percentage:
+        if percentage >= alert_percentage:
             alert_data = {
                 "status": "firing",
                 "alerts": [
@@ -187,8 +188,8 @@ def run_query(latency_second,upper_than_percentage):
                         },
                         "annotations": {
                             "summary": "Latency on " + str(latency_second) +"s",
-                            # "description": " 🔴 " + request_uri + " Percentage of Latency is upper than " + str(upper_than_percentage) +"%"
-                            "description": " 🔴 " + request_uri + " Percentage of Latency is " + str(percentage) +"%"
+                            # "description": " 🟠 " + request_uri + " Percentage of Latency is upper than " + str(alert_percentage) +"%"
+                            "description": " 🟠 " + request_uri + " Percentage of Latency is " + str(percentage) +"%"
                         },
                     }
                 ],
