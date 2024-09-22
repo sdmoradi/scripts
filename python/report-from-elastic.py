@@ -133,7 +133,24 @@ def uptime_query(server_name,alert_percentage):
         }
         print("Alert sended")
         send_to_telegram(alert_data)
-
+    else:
+        alert_data = {
+            "status": "firing",
+            "alerts": [
+                {
+                    "labels": {
+                        "alertname": server_name + " Uptime",
+                        "severity": "Low",
+                    },
+                    "annotations": {
+                        "summary": "Uptime Alert",
+                        "description": " 🟢 " + "Uptime of " + server_name + " is " + str(uptime_percentage) + "%"
+                    },
+                }
+            ],
+        }
+        print("Alert sended")
+        send_to_telegram(alert_data)
 
 def run_query(latency_second,alert_percentage):
     for request_uri in eval("request_uris_" + str(latency_second) + "s"):
